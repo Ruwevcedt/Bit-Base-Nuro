@@ -1,0 +1,51 @@
+let FM = Filemanager.default
+
+let maindir = FM.currentDirectoryPath
+let datadir = maindir + "/DATAS"
+let metadir = maindir + "/METAS"
+let nodedir = maindir + "/NODES"
+
+func readtxt_bool (D: String) -> Array<Array<Bool>>{
+  var T : Array<Bool> = []
+  var O : Array<Array<Bool>> = [[]]
+  var t = false
+  for character in D{
+    switch character{
+    case "[":
+      T = []
+      t = false
+    case "t":
+      T.append(true)
+    case "f":
+      T.append(false)
+    case "]":
+      if (t == false){
+        O.append(T)
+        t = true
+       }
+      else{t = false}
+    default:
+      break
+    }
+  }
+  return O
+}
+
+class Layer {
+  var ID : Int = 0
+  class Data : Layer {
+    var filename : String {
+      get{return "\(ID).txt"}
+    }
+    var filepath : String {
+      get{return datadir + "/" + self.filename}
+    }
+    var data : Array<Array<Bool>> {
+      get{return readtxt_bool(try String.init(contentsOfFile: self.filepath))}
+      set{
+        String.init(describing: newValue).write(atPath: filepath, atomically: false, attribute: nil)
+        
+        }
+    }
+  }
+}
