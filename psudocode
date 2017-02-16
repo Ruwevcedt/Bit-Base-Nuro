@@ -31,6 +31,8 @@ func readtxt_bool (D: String) -> Array<Array<Bool>>{
   return O
 }
 
+func sumofX (S: Array<Array<Bool>>) -> Array<Float>
+
 class Layer {
   var ID : Int = 0
   class Data : Layer {
@@ -44,8 +46,24 @@ class Layer {
       get{return readtxt_bool(try String.init(contentsOfFile: self.filepath))}
       set{
         String.init(describing: newValue).write(atPath: filepath, atomically: false, attribute: nil)
-        
+        ////////////update metadata//////////////
+        var MD = MetaData()
+        MD.ID = self.ID
+        MD.metadata = boolize (D:sumofX (self.data), By: 0.5)
+        /////////////////////////////////////////
         }
+    }
+    class MetaData : Data{
+      var metaname : String {
+        get {return "\(ID).txt"}
+      }
+      var metapath : String {
+        get {return metadir + "/" + metaname}
+      }
+      var metadata : Array<Bool> {
+        get {return readtxt_bool(try String.init(contentsOfFile: self.metapath))[0]}
+        set {String.init(describing: newValue).write(atPath: metapath, atomically: false, attribute: nil)}
+      }
     }
   }
 }
