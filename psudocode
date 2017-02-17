@@ -142,7 +142,7 @@ class Layer {
         get {return "\(ID).txt"}
       }
       var metapath : String {
-        get {return metadir + "/" + metaname}
+        get {return metadir + "/" + self.metaname}
       }
       var metadata : Array<Bool> {
         get {return readtxt_bool(try String.init(contentsOfFile: self.metapath))[0]}
@@ -154,6 +154,38 @@ class Layer {
           get {return AndLL_L(L1: self.metadata, L2: input)}
         }
       }
+      class Nuron : MetaData {
+        var nid : Int = 0
+        var ndata : Bool {
+          get {return self.metadata[nid]}
+        }
+        var input : Bool = false
+        var output : Bool {
+          get {return AndBB_B(b1: input, b2: ndata)}
+        }
+      }
     }
+  }
+}
+
+class Node {
+  var FromID : Int {
+    get {return 0}
+    set {FromLayer.ID = newValue}
+  }
+  var ToID : Int {
+    get {return 0}
+    set {ToLayer.ID = newValue}
+  }
+  var FromLayer : Layer = Layer()
+  var ToLayer : Layer = Layer()
+  class Data : Node {
+    var filename : String {
+      get {return "\(FromID)_\(ToID).txt"}
+    }
+    var filepath : String {
+      get {return nodedir + "/" + self.filename}
+    }
+    var data : Array<Array<>>
   }
 }
