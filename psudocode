@@ -31,7 +31,49 @@ func readtxt_bool (D: String) -> Array<Array<Bool>>{
   return O
 }
 
-func sumofX (S: Array<Array<Bool>>) -> Array<Float>
+func Trnsb_f (b: Bool) -> Float {
+  return (b == true ? 1 : 0)
+}
+
+func Sumbb_f (b1: Bool, b2: Bool) -> Float {
+  return Trnsb_f(b: b1) + Trnsb_f(b: b2)
+}
+
+func Sumbf_f (b: Bool, f: Float) -> Float { 
+  return f + Trnsb_f(b: b)
+}
+
+func SumLL_fL (L1: Array<Bool>, L2: Array<Bool>) -> Array<Float> { 
+  let l1 = L1.count 
+  let l2 = L2.count 
+  var c : Int = 0 
+  var O : Array<Bool> = [] 
+  while (c != l1)||(c != l2) {
+    O.append(Sumbb_f(b1: L1[c], b2: L2[c]))  c +=1 
+  } 
+  return O
+}
+
+func SumfLL_fL (fL : Array<Float>, L: Array<Bool>) -> Array<Float> {
+  let fl = fL.count 
+  let l = L.count 
+  var c : Int = 0 
+  var O : Array<Bool> = [] 
+  while (c != fl)||(c != l) {
+    O.append(Sumbf_f(b: L[c], f: fL[c]))
+    c += 1 
+  } 
+  return O
+}
+
+func SumSx_fL (S: Array<Array<Bool>>) -> Array<Float> {
+  var O : Array<Float> = SumLL_fL(L1: S[0], L2: S[1]) 
+  let s : Int = S.count 
+  for c in 2..<s {
+    O = SumfLL_fL(fL: O, L: S[c]) 
+  } 
+  return O
+}
 
 AndBB_B (b1: Bool, b2: Bool) -> Bool {
   return (b1 == b2 ? true : false)
@@ -49,6 +91,16 @@ func AndLL_L (L1: Array<Bool>, L2: Array<Bool>) -> Array<Bool> {
   return O
 }
 
+func AndSL_S (S: Array<Array<Bool>>, L: Array<Bool>) -> Array<Array<Bool>> {
+  var O : Array<Bool> = []
+  for l in S {
+    O.append(AndLL_L(L1: l, L2: L))
+  }
+  return O
+}
+
+
+
 class Layer {
   var ID : Int = 0
   class Data : Layer {
@@ -65,7 +117,7 @@ class Layer {
         ////////////update metadata//////////////
         var MD = MetaData()
         MD.ID = self.ID
-        MD.metadata = boolize (D:sumofX (self.data), By: 0.5)
+        MD.metadata = boolize (D: SumSx_fL (self.data), By: 0.5)
         /////////////////////////////////////////
         }
     }
@@ -85,6 +137,12 @@ class Layer {
       var metadata : Array<Bool> {
         get {return readtxt_bool(try String.init(contentsOfFile: self.metapath))[0]}
         set {String.init(describing: newValue).write(atPath: metapath, atomically: false, attribute: nil)}
+      }
+      class MetaMain : MetaData {
+        var input : Array<Bool> = []
+        var output : Array<Bool> {
+          get {return AndLL_L(L1: self.metadata, L2: input)}
+        }
       }
     }
   }
