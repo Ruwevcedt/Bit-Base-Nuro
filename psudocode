@@ -33,6 +33,22 @@ func readtxt_bool (D: String) -> Array<Array<Bool>>{
 
 func sumofX (S: Array<Array<Bool>>) -> Array<Float>
 
+AndBB_B (b1: Bool, b2: Bool) -> Bool {
+  return (b1 == b2 ? true : false)
+}
+
+func AndLL_L (L1: Array<Bool>, L2: Array<Bool>) -> Array<Bool> {
+  let l1 = L1.count
+  let l2 = L2.count
+  var c : Int = 0
+  var O : Array<Bool> = []
+  while (c != l1)||(c != l2) {
+    O.append(AndBB_B(b1: L1[c], b2: L2[c]))
+    c += 1
+  }
+  return O
+}
+
 class Layer {
   var ID : Int = 0
   class Data : Layer {
@@ -53,6 +69,12 @@ class Layer {
         /////////////////////////////////////////
         }
     }
+    class Main : Data{
+      var input : Array<Bool> = []
+      var output : Array<Bool> {
+        get {return AndLL_L(L1: self.data, L2: input)}
+      }
+    } 
     class MetaData : Data{
       var metaname : String {
         get {return "\(ID).txt"}
