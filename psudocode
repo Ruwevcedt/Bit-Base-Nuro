@@ -75,7 +75,7 @@ func SumSx_fL (S: Array<Array<Bool>>) -> Array<Float> {
   return O
 }
 
-AndBB_B (b1: Bool, b2: Bool) -> Bool {
+func AndBB_B (b1: Bool, b2: Bool) -> Bool {
   return (b1 == b2 ? true : false)
 }
 
@@ -99,7 +99,17 @@ func AndSL_S (S: Array<Array<Bool>>, L: Array<Bool>) -> Array<Array<Bool>> {
   return O
 }
 
+func Trnsf_b(f: Float, By: Float = 0.5) -> Bool {
+  return (f >= By ? true : false) 
+}
 
+func TrnsfL_bL(fL: Array<Float>, By: Float = 0.5) -> Array<Bool> {
+  var O : Array<Bool> = []
+  for f in fL {
+    O.append(Trnsf_b(f: fL[c], By: By))
+  }
+  return O
+}
 
 class Layer {
   var ID : Int = 0
@@ -117,8 +127,8 @@ class Layer {
         ////////////update metadata//////////////
         var MD = MetaData()
         MD.ID = self.ID
-        MD.metadata = boolize (D: SumSx_fL (self.data), By: 0.5)
-        /////////////////////////////////////////
+        MD.metadata = TrnsfL_bL(fL: SumSx_fL(S: self.data), By: 0.5)
+        /////////////////issue///////////////////
         }
     }
     class Main : Data{
