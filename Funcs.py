@@ -115,20 +115,3 @@ def resiznbs_bs(n, bsqr):
     for bsc in bsqr:
         o.append(resiznbl_bl(n, bsc))
     return o
-
-
-def ridt_bs(t):
-    o = []
-    st = False
-    for tc in t:
-        if tc == "[":
-            lt = []
-            st = False
-        elif (tc == "]") and (not st):
-            o.append(lt)
-            st = True
-        elif tc == "T":
-            lt.append(True)
-        elif tc == "F":
-            lt.append(False)
-    return o
