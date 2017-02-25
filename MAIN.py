@@ -99,16 +99,18 @@ class Nodes(InteLayer):
             self.node = ast.literal_eval(nodefile.readline())
             nodefile.close()
 
+            
 class Circuit:
     ID = 0
 
     def __init__(self, new_id):
         self.ID = new_id
 
+        
 class Links(Circuit):
     filename = ""
     filepath = ""
-    data = [[]]
+    data = []
 
     def __init__(self, new_id):
         Circuit.__init__(self, new_id)
@@ -118,3 +120,5 @@ class Links(Circuit):
             self.data = ast.literal_eval(linkfile.readline())
             linkfile.close()
 
+
+            
