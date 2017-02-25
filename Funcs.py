@@ -58,10 +58,21 @@ def sumblbl_bl(blst1, blst2):
     return o
 
 
-def sumaxxbs_il(bsqr):
-    o = []
+def sumaxxbs_bl(bsqr):
+    ot = []
+    oa = []
     for bsc in bsqr:
-        o = sumblbl_bl(o, bsc)
+        ot = sumblbl_bl(ot, bsc)
+        oa = sumblbl_bl(oa, [1] * len(bsc))
+    oc = len(oa)
+    o = []
+    for count in range(oc):
+        fot = float(ot[count])
+        foa = float(oa[count])
+        if fot / foa >= 0.5:
+            o.append(True)
+        else:
+            o.append(False)
     return o
 
 
@@ -103,4 +114,21 @@ def resiznbs_bs(n, bsqr):
     o = [[]]
     for bsc in bsqr:
         o.append(resiznbl_bl(n, bsc))
+    return o
+
+
+def ridt_bs(t):
+    o = []
+    st = False
+    for tc in t:
+        if tc == "[":
+            lt = []
+            st = False
+        elif (tc == "]") and (not st):
+            o.append(lt)
+            st = True
+        elif tc == "T":
+            lt.append(True)
+        elif tc == "F":
+            lt.append(False)
     return o
