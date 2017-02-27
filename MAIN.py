@@ -1,14 +1,26 @@
 import Funcs
 import ast
 
-Username = "ruwevcedt"
-Maindir = "/home/{}/odor/".format(Username)
-Datadir = Maindir + "Datas/"
-Metadir = Datadir + "m/"
-Nodedir = Maindir + "Nodes/"
-LLinkdir = Maindir + "Links/Layers/"
-NLinkdir = Maindir + "Links/Nodes/"
+user = "ruwevcedt"
 
+
+class Dir:
+    Username = ""
+    Maindir = ""
+    Datadir = ""
+    Metadir = ""
+    Nodedir = ""
+    LLinkdir = ""
+    NLinkdir = ""
+    
+    def __init__(self, new_username):
+        self.Maindir = "/home/{}/odor/".format(Username)
+        self.Datadir = Maindir + "Datas/"
+        self.Metadir = Datadir + "m/"
+        self.Nodedir = Maindir + "Nodes/"
+        self.LLinkdir = Maindir + "Links/Layers/"
+        self.NLinkdir = Maindir + "Links/Nodes/"
+        
 
 class Layer:
     ID = 0
@@ -26,7 +38,7 @@ class Datas(Layer):
     def __init__(self, new_id):
         Layer.__init__(self, new_id)
         self.filename = "Data{}.txt".format(self.ID)
-        self.filepath = Datadir + self.filename
+        self.filepath = Dir(user).Datadir + self.filename
         with open(self.filepath, "w+") as datafile:
             self.data = ast.literal_eval(datafile.readline())
             datafile.close()
@@ -41,7 +53,7 @@ class MetaDatas(Layer):
     def __init__(self, new_id):
         Layer.__init__(self, new_id)
         self.mfilename = "mData{}.txt".format(new_id)
-        self.mfilepath = Metadir + self.mfilepath
+        self.mfilepath = Dir(user).Metadir + self.mfilepath
         with open(self.mfilepath, "w+") as mdatafile:
             self.mdata = ast.literal_eval(mdatafile.readline())
             mdatafile.close()
@@ -100,13 +112,13 @@ class Nodes(InteLayer):
     # node[toid_nuron_num][fromid_nuron_num1, 2, ...]
     # if node[toid_nuron_num] == []:
     #   you should delete
-    #       Datas(self.toID).data[toid_nuron_num]
+    #       Datas(self.toID).data[all smplz][toid_nuron_num]
     #   and MetaDatas(self.toID).mdata[toid_nuron_num]
 
     def __init__(self, new_fromid, new_toid):
         InteLayer.__init__(self, new_fromid, new_toid)
         self.filename = "Node{}-{}.txt".format(new_fromid, new_toid)
-        self.filepath = Nodedir + self.filename
+        self.filepath = Dir(user).Nodedir + self.filename
         with open(self.filepath, "w+") as nodefile:
             self.node = ast.literal_eval(nodefile.readline())
             nodefile.close()
@@ -137,7 +149,7 @@ class LayerLinks(Circuit):
     def __init__(self, new_id):
         Circuit.__init__(self, new_id)
         self.filename = "Link{}.txt".format(self.ID)
-        self.filepath = LLinkdir + self.filename
+        self.filepath = Dir(user).LLinkdir + self.filename
         with open(self.filepath, "w+") as linkfile:
             self.layer_data = ast.literal_eval(linkfile.readline())
             linkfile.close()
@@ -161,7 +173,7 @@ class NodeLinks(Circuit):
     def __init__(self, new_id):
         Circuit.__init__(self, new_id)
         self.filename = "Link{}.txt".format(self.ID)
-        self.filepath = NLinkdir + self.filename
+        self.filepath = Dir(user).NLinkdir + self.filename
         with open(self.filepath, "w+") as linkfile:
             self.node_data = ast.literal_eval(linkfile.readline())
             linkfile.close()
