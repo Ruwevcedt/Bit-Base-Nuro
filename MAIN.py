@@ -66,7 +66,7 @@ class MetaMain(MetaDatas):
     def __init__(self, new_id, new_i):
         MetaDatas.__init__(self, new_id)
         self.I = new_i
-        self.O = Funcs.andbbl_bl(self.mdata, self.I)
+        self.O = Funcs.andblbl_bl(self.mdata, self.I)
 
 
 class MetaSub(MetaDatas):
