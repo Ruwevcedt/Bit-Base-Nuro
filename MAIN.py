@@ -1,26 +1,14 @@
 import Funcs
 import ast
 
-user = "ruwevcedt"
+Username = "ruwevcedt"
+Maindir = "/home/{}/odor/".format(Username)
+Datadir = Maindir + "Datas/"
+Metadir = Datadir + "m/"
+Nodedir = Maindir + "Nodes/"
+LLinkdir = Maindir + "Links/Layers/"
+NLinkdir = Maindir + "Links/Nodes/"
 
-
-class Dir:
-    Username = ""
-    Maindir = ""
-    Datadir = ""
-    Metadir = ""
-    Nodedir = ""
-    LLinkdir = ""
-    NLinkdir = ""
-    
-    def __init__(self, new_username):
-        self.Maindir = "/home/{}/odor/".format(Username)
-        self.Datadir = Maindir + "Datas/"
-        self.Metadir = Datadir + "m/"
-        self.Nodedir = Maindir + "Nodes/"
-        self.LLinkdir = Maindir + "Links/Layers/"
-        self.NLinkdir = Maindir + "Links/Nodes/"
-        
 
 class Layer:
     ID = 0
@@ -38,7 +26,7 @@ class Datas(Layer):
     def __init__(self, new_id):
         Layer.__init__(self, new_id)
         self.filename = "Data{}.txt".format(self.ID)
-        self.filepath = Dir(user).Datadir + self.filename
+        self.filepath = Datadir + self.filename
         with open(self.filepath, "w+") as datafile:
             self.data = ast.literal_eval(datafile.readline())
             datafile.close()
@@ -53,7 +41,7 @@ class MetaDatas(Layer):
     def __init__(self, new_id):
         Layer.__init__(self, new_id)
         self.mfilename = "mData{}.txt".format(new_id)
-        self.mfilepath = Dir(user).Metadir + self.mfilepath
+        self.mfilepath = Metadir + self.mfilepath
         with open(self.mfilepath, "w+") as mdatafile:
             self.mdata = ast.literal_eval(mdatafile.readline())
             mdatafile.close()
@@ -66,17 +54,7 @@ class MetaMain(MetaDatas):
     def __init__(self, new_id, new_i):
         MetaDatas.__init__(self, new_id)
         self.I = new_i
-        self.O = Funcs.andblbl_bl(self.mdata, self.I)
-
-
-class MetaSub(MetaDatas):
-    I = []
-    O = []
-
-    def __init__(self, new_id, new_i, n1, n2):
-        MetaDatas.__init__(self, new_id)
-        self.I = new_i
-        self.O = Funcs.andbb_b(self.I[n1], self.mdata[n2])
+        self.O = Funcs.andbbl_bl(self.mdata, self.I)
 
 
 class Updatas(Datas, MetaDatas):
@@ -109,16 +87,18 @@ class Nodes(InteLayer):
     filename = ""
     filepath = ""
     node = []
-    # node[toid_nuron_num][fromid_nuron_num1, 2, ...]
+    # node [toid nuron num1, 2, 3, ...][fid nuron number1, 2, ...]
+    #
     # if node[toid_nuron_num] == []:
     #   you should delete
-    #       Datas(self.toID).data[all smplz][toid_nuron_num]
-    #   and MetaDatas(self.toID).mdata[toid_nuron_num]
+    #       Datas(self.toID).data[toid_nuron_num]
+    #       MetaDatas(self.toID).mdata[toid_nuron_num]
+    #       node[toid_nuron_num]
 
     def __init__(self, new_fromid, new_toid):
         InteLayer.__init__(self, new_fromid, new_toid)
         self.filename = "Node{}-{}.txt".format(new_fromid, new_toid)
-        self.filepath = Dir(user).Nodedir + self.filename
+        self.filepath = Nodedir + self.filename
         with open(self.filepath, "w+") as nodefile:
             self.node = ast.literal_eval(nodefile.readline())
             nodefile.close()
@@ -149,7 +129,7 @@ class LayerLinks(Circuit):
     def __init__(self, new_id):
         Circuit.__init__(self, new_id)
         self.filename = "Link{}.txt".format(self.ID)
-        self.filepath = Dir(user).LLinkdir + self.filename
+        self.filepath = LLinkdir + self.filename
         with open(self.filepath, "w+") as linkfile:
             self.layer_data = ast.literal_eval(linkfile.readline())
             linkfile.close()
@@ -168,12 +148,12 @@ class NodeLinks(Circuit):
     filename = ""
     filepath = ""
     node_data = []
-    # node_data[sequence_num == dept][self.dept_toid1, 2, ...][self.toid_fromid1, 2, ...]
+    # node_data[sequence_num == dept][(fromid, toid)1, ()2, ...]
 
     def __init__(self, new_id):
         Circuit.__init__(self, new_id)
         self.filename = "Link{}.txt".format(self.ID)
-        self.filepath = Dir(user).NLinkdir + self.filename
+        self.filepath = NLinkdir + self.filename
         with open(self.filepath, "w+") as linkfile:
             self.node_data = ast.literal_eval(linkfile.readline())
             linkfile.close()
@@ -193,7 +173,6 @@ class Base(LayerLinks, NodeLinks):
     Dept = 0
     PreLayer_IDs = []
     CurLayer_IDs = []
-    PosLayer_IDs = []
 
     PC_IntLyr = []
     CP_IntLyr = []
@@ -204,59 +183,57 @@ class Base(LayerLinks, NodeLinks):
         self.Dept = len(self.layer_data)
         self.PreLayer_IDs = []
         self.CurLayer_IDs = self.layer_data[0]
-        self.PosLayer_IDs = self.layer_data[1]
 
         self.PC_IntLyr = []
         self.CP_IntLyr = self.node_data[0]
 
 
 class Main(Base):
-    I = []
-    O = []
+    I = {}
+    O = {}
 
     def step(self):
         self.CurQ += 1
         self.PreLayer_IDs = self.CurLayer_IDs
-        self.CurLayer_IDs = self.PosLayer_IDs
-        self.PosLayer_IDs = self.layer_data[self.CurQ + 1]
+        self.CurLayer_IDs = self.layer_data[self.CurQ]
 
         self.PC_IntLyr = self.CP_IntLyr
         self.CP_IntLyr = self.node_data[self.CurQ]
 
     def start(self):
-        curlyr_mem = []
+        curlyr_mem = {}
 
-        for l_id in self.CurLayer_IDs:
-            curlyr_mem.append(MetaMain(l_id, self.I).O)
+        for lyrid in self.CurLayer_IDs:
+            curlyr_mem[lyrid] = MetaMain(lyrid, self.I[lyrid]).O
 
         self.step()
         return curlyr_mem
-    # mem[output1, 2, ... sorted by curlayer_ids]
 
     def preflash(self, prelyr_mem):
-        curlyr_mem = []
+        hinput_mem = {}
 
-        for fid in self.CurLayer_IDs:
-            temp_hi = []
-            for toid in self.CP_IntLyr[fid]:
-                node = Nodes(fid, toid).node
-                temp_push = []
+        for (fid, toid) in self.PC_IntLyr:
+            hinput = Funcs.pushblil_bl(prelyr_mem[fid], Nodes(fid, toid).node)
+            if toid in hinput_mem:
+                hinput_mem[toid] = Funcs.sumaxxbs_bl([hinput, hinput_mem[toid]])
+            else:
+                hinput_mem[toid] = hinput
 
-                for to_nur in node:
-                    num_tonur = float(len(node[to_nur]))
-                    temp_push = [0] * num_tonur
-                    for from_nur in node[to_nur]:
-                        temp_push[from_nur] += Funcs.andbb_b(prelyr_mem[self.PreLayer_IDs.index(fid)][from_nur], node[to_nur][from_nur])
-                    if temp_push >= num_tonur / 2:
-                        temp_hi.append(True)
-                    else:
-                        temp_hi.append(False)
-
-                temp_hi.append(temp_push)
-            curlyr_mem.append(temp_hi)
-
-        return curlyr_mem
-    # mem[fromid1, 2, ... sorted by curlayer_ids][hidden input for toid1, 2, ... sorted by cp_intlyr]
+        return hinput_mem
 
     def flash(self, curlyr_mem):
-        
+        houtput_mem = {}
+
+        for lyrid in self.CurLayer_IDs:
+            houtput_mem[lyrid] = MetaMain(lyrid, curlyr_mem[lyrid])
+
+        self.step()
+        return houtput_mem
+
+    def __init__(self, new_id, new_i):
+        Base.__init__(self, new_id)
+        self.I = new_i
+        output = self.start()
+        while self.CurQ != self.Dept:
+            output = self.flash(self.preflash(output))
+        self.O = output
