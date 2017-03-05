@@ -23,13 +23,6 @@ def andblbl_bl(blst1, blst2):
     return o
 
 
-def andbsbl_bs(bsqr, blst):
-    o = [[]]
-    for sc in bsqr:
-        o.append(andblbl_bl(sc, blst))
-    return o
-
-
 def pushblil_bl(blst, isqr):
     o = []
     il = len(isqr)
@@ -38,13 +31,6 @@ def pushblil_bl(blst, isqr):
         for lp2 in isqr[lp1]:
             tl.append(blst[lp2])
         o.append(resiznbl_bl(1, tl))
-    return o
-
-
-def sumbbl_il(b, blst):
-    o = []
-    for blc in blst:
-        o.append(b + blc)
     return o
 
 
@@ -126,11 +112,4 @@ def resiznbl_bl(n, blst):
         else:
             o.append(False)
         t = 0.0
-    return o
-
-
-def resiznbs_bs(n, bsqr):
-    o = [[]]
-    for bsc in bsqr:
-        o.append(resiznbl_bl(n, bsc))
     return o
