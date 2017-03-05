@@ -1,4 +1,4 @@
-import Funcs
+import Nain
 import ast
 
 Username = "ruwevcedt"
@@ -54,7 +54,7 @@ class MetaMain(MetaDatas):
     def __init__(self, new_id, new_i):
         MetaDatas.__init__(self, new_id)
         self.I = new_i
-        self.O = Funcs.andbbl_bl(self.mdata, self.I)
+        self.O = Nain.andbbl_bl(self.mdata, self.I)
 
 
 class InteLayer:
@@ -97,7 +97,7 @@ class Circuit:
 class LayerLinks(Circuit):
     filename = ""
     filepath = ""
-    layer_data = []
+    llink = []
     # layer_data[sequence_num == dept1, 2, ...][self.dept_layer.id1, 2, ...]
 
     def __init__(self, new_id):
@@ -105,14 +105,14 @@ class LayerLinks(Circuit):
         self.filename = "Link{}.txt".format(self.ID)
         self.filepath = LLinkdir + self.filename
         with open(self.filepath, "w+") as linkfile:
-            self.layer_data = ast.literal_eval(linkfile.readline())
+            self.llink = ast.literal_eval(linkfile.readline())
             linkfile.close()
 
 
 class NodeLinks(Circuit):
     filename = ""
     filepath = ""
-    node_data = []
+    nlink = []
     # node_data[sequence_num == dept][(fromid, toid)1, ()2, ...]
 
     def __init__(self, new_id):
@@ -120,7 +120,7 @@ class NodeLinks(Circuit):
         self.filename = "Link{}.txt".format(self.ID)
         self.filepath = NLinkdir + self.filename
         with open(self.filepath, "w+") as linkfile:
-            self.node_data = ast.literal_eval(linkfile.readline())
+            self.nlink = ast.literal_eval(linkfile.readline())
             linkfile.close()
 
 
@@ -136,12 +136,12 @@ class Base(LayerLinks, NodeLinks):
     def __init__(self, new_id):
         LayerLinks.__init__(self, new_id)
         NodeLinks.__init__(self, new_id)
-        self.Dept = len(self.layer_data)
+        self.Dept = len(self.llink)
         self.PreLayer_IDs = []
-        self.CurLayer_IDs = self.layer_data[0]
+        self.CurLayer_IDs = self.llink[0]
 
         self.PC_IntLyr = []
-        self.CP_IntLyr = self.node_data[0]
+        self.CP_IntLyr = self.nlink[0]
 
 
 class Main(Base):
@@ -151,10 +151,10 @@ class Main(Base):
     def step(self):
         self.CurQ += 1
         self.PreLayer_IDs = self.CurLayer_IDs
-        self.CurLayer_IDs = self.layer_data[self.CurQ]
+        self.CurLayer_IDs = self.llink[self.CurQ]
 
         self.PC_IntLyr = self.CP_IntLyr
-        self.CP_IntLyr = self.node_data[self.CurQ]
+        self.CP_IntLyr = self.nlink[self.CurQ]
 
     def start(self):
         curlyr_mem = {}
@@ -169,9 +169,9 @@ class Main(Base):
         hinput_mem = {}
 
         for (fid, toid) in self.PC_IntLyr:
-            hinput = Funcs.pushblil_bl(prelyr_mem[fid], Nodes(fid, toid).node)
+            hinput = Nain.pushblil_bl(prelyr_mem[fid], Nodes(fid, toid).node)
             if toid in hinput_mem:
-                hinput_mem[toid] = Funcs.sumaxxbs_bl([hinput, hinput_mem[toid]])
+                hinput_mem[toid] = Nain.sumaxxbs_bl([hinput, hinput_mem[toid]])
             else:
                 hinput_mem[toid] = hinput
 
