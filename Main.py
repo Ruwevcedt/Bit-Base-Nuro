@@ -175,6 +175,8 @@ class Main(Base):
                 hinput_mem[toid].append(hinput_mem[toid])
             else:
                 hinput_mem[toid] = [hinput]
+        for toids in hinput_mem:
+            hinput_mem[toids] = Nain.sumaxxbs_bl(hinput_mem[toids])
 
         return hinput_mem
 
