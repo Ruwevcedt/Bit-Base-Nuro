@@ -127,6 +127,7 @@ class NodeLinks(Circuit):
 class Base(LayerLinks, NodeLinks):
     CurQ = 0
     Dept = 0
+
     PreLayer_IDs = []
     CurLayer_IDs = []
 
@@ -169,11 +170,12 @@ class Main(Base):
         hinput_mem = {}
 
         for (fid, toid) in self.PC_IntLyr:
-            hinput = Nain.pushblil_bl(prelyr_mem[fid], Nodes(fid, toid).node)
+            hinput = Nain.pushblis_bl(prelyr_mem[fid], Nodes(fid, toid).node)
             if toid in hinput_mem:
-                hinput_mem[toid] = Nain.sumaxxbs_bl([hinput, hinput_mem[toid]])
+                hinput_mem[toid].append(hinput_mem[toid])
             else:
-                hinput_mem[toid] = hinput
+                hinput_mem[toid] = [hinput]
+            
 
         return hinput_mem
 
