@@ -175,7 +175,6 @@ class Main(Base):
                 hinput_mem[toid].append(hinput_mem[toid])
             else:
                 hinput_mem[toid] = [hinput]
-            
 
         return hinput_mem
 
