@@ -172,7 +172,7 @@ class Main(Base):
         for (fid, toid) in self.PC_IntLyr:
             hinput = Nain.pushblis_bl(prelyr_mem[fid], Nodes(fid, toid).node)
             if toid in hinput_mem:
-                hinput_mem[toid].append(hinput_mem[toid])
+                hinput_mem[toid].append(hinput)
             else:
                 hinput_mem[toid] = [hinput]
         for toids in hinput_mem:
