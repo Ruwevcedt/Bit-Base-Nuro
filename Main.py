@@ -127,7 +127,6 @@ class NodeLinks(Circuit):
 class Base(LayerLinks, NodeLinks):
     CurQ = 0
     Dept = 0
-
     PreLayer_IDs = []
     CurLayer_IDs = []
 
@@ -137,7 +136,7 @@ class Base(LayerLinks, NodeLinks):
     def __init__(self, new_id):
         LayerLinks.__init__(self, new_id)
         NodeLinks.__init__(self, new_id)
-        self.Dept = len(self.llink) - 1
+        self.Dept = len(self.llink) -1
         self.PreLayer_IDs = []
         self.CurLayer_IDs = self.llink[0]
 
@@ -175,6 +174,7 @@ class Main(Base):
                 hinput_mem[toid].append(hinput)
             else:
                 hinput_mem[toid] = [hinput]
+
         for toids in hinput_mem:
             hinput_mem[toids] = Nain.sumaxxbs_bl(hinput_mem[toids])
 

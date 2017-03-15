@@ -4,9 +4,12 @@ import Main
 class Updatas(Main.Datas, Main.MetaDatas):
     data_bef = []
     data_aft = []
+    # data[smpls][nurons]
 
     mdata_bef = []
     mdata_aft = []
+
+    # mdata[nurons]
 
     def revert_change(self):
         data_temp = self.data_bef
@@ -48,6 +51,8 @@ class Upnodes(Main.Nodes):
     node_bef = []
     node_aft = []
 
+    # node[toid nurons][fid nurons]
+
     def revert_change(self):
         node_temp = self.node_bef
 
@@ -72,6 +77,8 @@ class UpLlinks(Main.LayerLinks):
     llink_bef = []
     llink_aft = []
 
+    # llink[depts][layers]
+
     def revert_change(self):
         llink_temp = self.llink_bef
 
@@ -94,6 +101,8 @@ class UpLlinks(Main.LayerLinks):
 class UpNlinks(Main.NodeLinks):
     nlink_bef = []
     nlink_aft = []
+
+    # nlink[depts][(fid,toid)s]
 
     def revert_change(self):
         nlink_temp = self.nlink_bef
