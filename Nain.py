@@ -23,7 +23,7 @@ def andblbl_bl(blst1, blst2):
     return o
 
 
-def pushblil_bl(blst, isqr):
+def pushblis_bl(blst, isqr):
     o = []
     il = len(isqr)
     for lp1 in range(il):
