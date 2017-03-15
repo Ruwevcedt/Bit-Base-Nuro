@@ -30,7 +30,7 @@ def pushblis_bl(blst, isqr):
         tl = []
         for lp2 in isqr[lp1]:
             tl.append(blst[lp2])
-        o.append(resiznbl_bl(1, tl))
+        o.append(resiznbl_bl(1, tl)[0])
     return o
 
 
@@ -75,7 +75,7 @@ def sumaxxbs_bl(bsqr):
 
 def resiznbl_bl(n, blst):
     bl = len(blst)
-    fbl = float(bl)
+    fbl = float(bl)/2
 
     if n == bl:
         return blst
@@ -83,7 +83,7 @@ def resiznbl_bl(n, blst):
         t = 0.0
         for lp1 in blst:
             t += lp1
-        if t >= fbl/2:
+        if t >= fbl:
             return [True]
         else:
             return [False]
@@ -93,7 +93,7 @@ def resiznbl_bl(n, blst):
     lt = []
     ft = float(True)
     ff = float(False)
-    fw = fbl/(2*fn)
+    fw = fbl/fn
     for lp1 in range(bl):
         if blst[lp1]:
             t = ft/fn
